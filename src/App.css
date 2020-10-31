@@ -1,0 +1,19 @@
+.app{
+  height: 100vh;
+}
+.main_buttons{
+  margin-top: auto;
+}
+a{
+  text-decoration: none;
+}
+.bgcolor{
+  background: #3f51b5;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #3a7bd5, #3f51b5);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #3a7bd5, #3f51b5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.btn:hover{
+  opacity: 0.8;
+  transform: scale(1.1);
+}
