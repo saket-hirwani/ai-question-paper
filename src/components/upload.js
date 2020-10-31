@@ -21,6 +21,7 @@ function Uplaod() {
       backgroundColor: "white",
       borderRadius: 5,
       padding: 5,
+      //margin:0
     },
   }));
 
