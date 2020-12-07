@@ -14,6 +14,11 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Avatar from '@material-ui/core/Avatar';
+import { useStateValue } from '../StateProvider';
+import { auth, provider } from '../firebase';
+import { actionTypes } from '../reducer';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -80,6 +85,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header() {
+  const [{user}] = useStateValue();
+  const [{}, dispatch] = useStateValue();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -103,7 +110,31 @@ export default function Header() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const signIn =() =>{
+    // auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    auth.signInWithPopup(provider).then(result =>
+        {
+            dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user,
+            })
+        }
+        ).catch(
+            (e)=>alert(e.message)
+        );
+}
+const signOut = () =>{
+  auth.signOut().then(result =>
+    {
+        dispatch({
+            type: actionTypes.SET_USER,
+            user: null,
+        })
+    }
+    ).catch(
+        (e)=>alert(e.message)
+    );
+}
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -115,8 +146,9 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <Link to= '/profile'><MenuItem onClick={handleMenuClose}>Profile</MenuItem></Link>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={signOut}>Logout</MenuItem>
     </Menu>
   );
 
@@ -201,6 +233,7 @@ export default function Header() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>*/}
+            {user?
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -209,8 +242,11 @@ export default function Header() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+             
+              <Avatar alt="Remy Sharp" src={user.photoURL} />
+            
             </IconButton>
+            :<button  onClick={signIn} className="sign_header">Sign In</button>}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
