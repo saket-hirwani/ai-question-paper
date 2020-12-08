@@ -1,10 +1,10 @@
 import React from "react";
 import { Container, Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Switch from "@material-ui/core/Switch";
+// import Switch from "@material-ui/core/Switch";
 import Paper from "@material-ui/core/Paper";
-import Grow from "@material-ui/core/Grow";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Grow from "@material-ui/core/Grow";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Link } from "react-router-dom";
 import { useStateValue } from "../StateProvider";
 import Box from '@material-ui/core/Box';
@@ -21,26 +21,26 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: 180,
-  },
-  container: {
-    display: "flex",
-  },
-  paper: {
-    margin: theme.spacing(1),
-  },
-  svg: {
-    width: 100,
-    height: 100,
-  },
-  polygon: {
-    fill: theme.palette.common.white,
-    stroke: theme.palette.divider,
-    strokeWidth: 1,
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     height: 180,
+//   },
+//   container: {
+//     display: "flex",
+//   },
+//   paper: {
+//     margin: theme.spacing(1),
+//   },
+//   svg: {
+//     width: 100,
+//     height: 100,
+//   },
+//   polygon: {
+//     fill: theme.palette.common.white,
+//     stroke: theme.palette.divider,
+//     strokeWidth: 1,
+//   },
+// }));
 
 
 
@@ -142,8 +142,8 @@ const rows = [
   function is called as recursive function. Using recursive
   algorithm, certain problems can be solved quite easily.`),
   createData('What is Inheritance?','fewfweafwafwaevwavw'),
-  createData('What is Recursion?','fewfweafwafwaevwavw'),
-  createData('What is Recursion?','fewfweafwafwaevwavw'),
+  createData('What is Recfeursion?','fewfweafwafwjfgaevwavw'),
+  createData('What is rsion?','fewfhjweafwafwaevwavw'),
   
 ];
 
@@ -154,12 +154,12 @@ const rows = [
 
 function Home() {
   const [{ user }] = useStateValue();
-  const classes = useStyles();
-  const [checked, setChecked] = React.useState(false);
+  // const classes = useStyles();
+  // const [checked, setChecked] = React.useState(false);
 
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
+  // const handleChange = () => {
+  //   setChecked((prev) => !prev);
+  // };
 
   return (
     <Container maxWidth="md">
