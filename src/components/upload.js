@@ -21,7 +21,7 @@ function Uplaod() {
       display: "flex",
       marginLeft: "auto",
       marginRight: "auto",
-      width: "80%",
+      width: "70%",
       backgroundColor: "white",
       borderRadius: 5,
       padding: 5,
@@ -73,6 +73,8 @@ function Uplaod() {
   const [isYeardisabled, setisYeardisabled] = useState(true);
   const [isUplaoddisabled, setisUplaoddisabled] = useState(true);
 
+  const [isBranchLoaded, setisBranchLoaded] = useState(false);
+
   
 
   const handleUniversityChange = (event) => {
@@ -91,8 +93,9 @@ function Uplaod() {
             id: doc.id,
             data: doc.data(),
           }))
-        )
-      );
+        ),
+        setisBranchLoaded(true)
+      )
     // console.log("val", event.target.value);
   };
   const handleBranchChange = (event) => {
@@ -114,7 +117,7 @@ function Uplaod() {
             data: doc.data(),
           }))
         )
-      );
+      )
   };
   const handleSemChange = (event) => {
     setisSubdisabled(false)
@@ -321,7 +324,10 @@ function Uplaod() {
       <h1 style={{ textAlign: "center" }}>Select your university details</h1>
       <FormControl className={classes.formControl}>
         <h5>University</h5>
+        <div className="upload_select">
         <select onChange={handleUniversityChange}>
+        {datastore?
+          <>
           <option>--select--</option>
           {datastore.map((item, index) => {
             return (
@@ -330,13 +336,23 @@ function Uplaod() {
               </option>
             );
           })}
+          </>
+          :<option>Loading...</option>
+        }
         </select>
-        <button onClick={adduniversity}>add university</button>
+        <div className="add_button">
+        <button onClick={adduniversity}>+</button>
+        <p>add university</p>
+        </div>
+        </div>
       </FormControl>
 
       <FormControl className={classes.formControl}>
         <h5>Branch</h5>
+        <div className="upload_select">
         <select onChange={handleBranchChange} disabled={isBranchdisabled}>
+        {isBranchLoaded?
+          <>
           <option>--select--</option>
           {branch.map((item, index) => {
             return (
@@ -345,12 +361,20 @@ function Uplaod() {
               </option>
             );
           })}
+          </>
+          :<option>Loading...</option>
+        }
         </select>
-        <button onClick={addbranch} disabled={isBranchdisabled}>add Branch</button>
+        <div className="add_button">
+        <button onClick={addbranch} disabled={isBranchdisabled}>+</button>
+        <p>add Branch</p>
+        </div>
+        </div>
       </FormControl>
 
       <FormControl className={classes.formControl}>
         <h5>Semester</h5>
+        <div className="upload_select">
         <select onChange={handleSemChange} disabled={isSemdisabled}>
           <option>--select--</option>
           {semester.map((item, index) => {
@@ -361,11 +385,16 @@ function Uplaod() {
             );
           })}
         </select>
-        <button onClick={addsemester} disabled={isSemdisabled}>add Semester</button>
+        <div className="add_button">
+        <button onClick={addsemester} disabled={isSemdisabled}>+</button>
+        <p>add Semester</p>
+        </div>
+        </div>
       </FormControl>
 
       <FormControl className={classes.formControl}>
         <h5>Subject</h5>
+        <div className="upload_select">
         <select onChange={handlesubjectChange} disabled={isSubdisabled}>
           <option>--select--</option>
           {subject.map((item, index) => {
@@ -376,11 +405,16 @@ function Uplaod() {
             );
           })}
         </select>
-        <button onClick={addsubject} disabled={isSubdisabled}>add Subject</button>
+        <div className="add_button">
+        <button onClick={addsubject} disabled={isSubdisabled}>+</button>
+        <p>add Subject</p>
+        </div>
+        </div>
       </FormControl>
 
       <FormControl className={classes.formControl}>
         <h5>Exam Year</h5>
+        <div className="upload_select">
         <select onChange={handleyearChange} disabled={isYeardisabled}>
           <option>--select--</option>
           {year.map((item, index) => {
@@ -391,11 +425,16 @@ function Uplaod() {
             );
           })}
         </select>
-        <button onClick={addyear} disabled={isYeardisabled}>add Year</button>
+        <div className="add_button">
+        <button onClick={addyear} disabled={isYeardisabled}>+</button>
+        <p>add Year</p>
+        </div>
+        </div>
       </FormControl>
 
       <FormControl className={classes.formControl}>
-        Uplaod
+        <h5 style={{marginBottom:5}}>Upload</h5>
+        <div className="upload_button">
         <input type="file" onChange={handleFileChange} style={{}} />
         <button onClick={handleupload} disabled={isUplaoddisabled}>Uplaod</button>
         {isShow?
@@ -411,6 +450,7 @@ function Uplaod() {
         </div>  
         )):null
       }
+      </div>
       </FormControl>
 
       <FormControl className={classes.formControl}>

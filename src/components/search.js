@@ -18,80 +18,13 @@ function Search() {
       display: "flex",
       marginLeft: "auto",
       marginRight: "auto",
-      width: "80%",
+      width: "70%",
       backgroundColor: "white",
       borderRadius: 5,
       padding: 10,
     },
   }));
 
-  //   const University = [
-  //     { value: 'csvtu', label: 'CSVTU' },
-  //     { value: 'DurgUniversity', label: 'Durg University' },
-  //     { value: 'PRSU', label: 'PRSU' },
-  //   ];
-  //   const Branch = {
-  //     "csvtu":[
-  //     { value: 'CSE', label: 'CSE' },
-  //     { value: 'IT', label: 'IT' },
-  //     { value: 'CIVIL', label: 'CIVIL' },
-  //     { value: 'MECH', label: 'MECH' },
-  //     { value: 'ETC', label: 'ETC' },
-  //     { value: 'EEE', label: 'EEE' },
-  //   ],
-  //   "DurgUniversity":[
-  //     { value: 'bsc', label: 'B.Sc.' },
-  //     { value: 'ba', label: 'B.A.' },
-  //     { value: 'bcom', label: 'B.Com.' },
-  //   ],
-  //   "PRSU":[
-  //     { value: 'bsc', label: 'B.Sc.' },
-  //     { value: 'ba', label: 'B.A.' },
-  //     { value: 'bcom', label: 'B.Com.' },
-  //   ]
-  // }
-  //   const Semester =
-  //   {
-  //     "csvtu":[
-  //     { value: '1', label: '1st' },
-  //     { value: '2', label: '2nd' },
-  //     { value: '3', label: '3rd' },
-  //     { value: '4', label: '4th' },
-  //     { value: '5', label: '5th' },
-  //     { value: '6', label: '6th' },
-  //     { value: '7', label: '7th' },
-  //     { value: '8', label: '8th' },
-  //   ],
-  //   "DurgUniversity":[
-  //     { value: '1', label: '1st year' },
-  //     { value: '2', label: '2nd year' },
-  //     { value: '3', label: '3rd year' },
-  //   ],
-  //   "PRSU":[
-  //     { value: '1', label: '1st year' },
-  //     { value: '2', label: '2nd year' },
-  //     { value: '3', label: '3rd year' },
-  //   ]
-  // }
-
-  //   const Subject =[
-  //     { value: 'Data Sturcture', label: 'Data Sturcture' },
-  //     { value: 'C++', label: 'C++' },
-  //     { value: 'C', label: 'C' },
-  //     { value: 'Java', label: 'Java' },
-  //   ];
-
-  // const Year =[
-  //   { value: '2020-June', label: '2020-June' },
-  //   { value: '2019-Dec', label: '2019-Dec' },
-  //   { value: '2019-June', label: '2019-June' },
-  //   { value: '2018-June', label: '2018-June' },
-  //   { value: '2018-June', label: '2018-June' },
-  //   { value: '2018-Dec', label: '2018-Dec' },
-  //   { value: '2017-June', label: '2017-June' },
-  //   { value: '2017-Dec', label: '2017-Dec' },
-  //   { value: '2016-Dec', label: '2016-Dec' },
-  // ];
   const [datastore, setdatastore] = useState([]);
   useEffect(() => {
     const unsubscribe = db.collection("university").onSnapshot((snapshot) =>
