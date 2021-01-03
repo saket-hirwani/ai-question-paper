@@ -1,12 +1,13 @@
 import React,{useEffect, useState} from 'react'
-import {Link, useLocation} from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import db from "../firebase";
 
 function DownloadFile() {
     let location = useLocation();
+    const [isloaded, setisloaded] = useState(false)
     const [filelink, setfilelink] = useState([])
     useEffect(() => {
-        console.log(location)
+        // console.log(location)
     db.collection("university")
       .doc(location.state.universityId)
       .collection("branch")
@@ -18,18 +19,54 @@ function DownloadFile() {
       .collection("year")
       .doc(location.state.yearId)
       .collection("link")
-      .onSnapshot((snapshot) =>
+      .where("isverifed", "==", true)
+      .get()
+      .then((snapshot) =>
       setfilelink(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             data: doc.data(),
           }))
-        ),
+      )
+      )
+      .catch(function(error) {
+          alert("Error getting documents: ", error);
+      })
+      .finally(()=>{
+        setisloaded(true);
+      })
+
+      // .onSnapshot((snapshot) =>
+      // setfilelink(
+      //     snapshot.docs.map((doc) => ({
+      //       id: doc.id,
+      //       data: doc.data(),
+      //     }))
+      //   ),
         
-      );
+      // )
+      // .then(()=>{
+      //   console.log("done");
+      // });
         return () => { 
         }
-    }, [])
+    }, [location.state.branchId, location.state.semId, location.state.subId, location.state.universityId, location.state.yearId])
+
+if(!isloaded){
+  return(
+    <div style={{marginTop:100,textAlign:'center'}}>
+    <p>Loading..</p>
+    </div>
+  )
+}
+else if(filelink==""){
+  return(
+      <div style={{marginTop:100,textAlign:'center'}}>
+  <p>No data found.</p>
+  </div>
+  )
+}
+else{
 return(
 <div style={{marginTop:100,textAlign:'center'}}>
 
@@ -45,6 +82,7 @@ return(
   })}
 </div>
 )
+}
 }
 
 export default DownloadFile;

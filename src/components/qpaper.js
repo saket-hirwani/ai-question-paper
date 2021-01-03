@@ -1,8 +1,6 @@
-import React, {useState, useEffect } from "react";
-import PDFViewer from "pdf-viewer-reactjs";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { DataGrid } from "@material-ui/data-grid";
-
+// import { DataGrid } from "@material-ui/data-grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -18,7 +16,6 @@ const useStyles = makeStyles({
 });
 
 
-
 function Qpaper() {
   const classes = useStyles();
   let location = useLocation();
@@ -27,7 +24,7 @@ function Qpaper() {
   var semId = location.state.semId;
   var subId = location.state.subId;
   useEffect(() => {
-    console.log(location);
+    // console.log(location);
   }, []);
   return (
     <div style={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}>
@@ -65,6 +62,7 @@ function Qpaper() {
       </div>
 
       <TableContainer component={Paper}>
+      {location.state.year === ""?<p>No data..</p>:
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -89,10 +87,13 @@ function Qpaper() {
                 </TableCell>
               </TableRow>
             )}
+            else{
+              return null
+            }
            }
             )}
           </TableBody>
-        </Table>
+        </Table>}
       </TableContainer>
     </div>
   );

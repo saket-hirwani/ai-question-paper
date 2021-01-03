@@ -4,17 +4,21 @@ import { useStateValue } from '../StateProvider';
 import { actionTypes } from '../reducer';
 // import firebase from 'firebase';
 function Login() {
-    const [{}, dispatch] = useStateValue();
+    const [{user}, dispatch] = useStateValue();
     const signIn =() =>{
         // auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
         auth.signInWithPopup(provider).then(result =>
             {
+                return(
                 dispatch({
                     type: actionTypes.SET_USER,
                     user: result.user,
-                })
+                }),
+                localStorage.setItem("user",  JSON.stringify(result.user))
+                )
             }
-            ).catch(
+            )
+            .catch(
                 (e)=>alert(e.message)
             );
     }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Container, Grid, Button } from "@material-ui/core";
+import { Container, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListSubheader from "@material-ui/core/ListSubheader";
+// import InputLabel from "@material-ui/core/InputLabel";
+// import MenuItem from "@material-ui/core/MenuItem";
+// import ListSubheader from "@material-ui/core/ListSubheader";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "react-select";
+// import Select from "react-select";
 import db from "../firebase";
 
 function Search() {
@@ -27,16 +27,25 @@ function Search() {
 
   const [datastore, setdatastore] = useState([]);
   useEffect(() => {
-    const unsubscribe = db.collection("university").onSnapshot((snapshot) =>
-      setdatastore(
+    const unsubscribe = db.collection("university")
+    .get()
+    .then((snapshot) =>
+    setdatastore(
         snapshot.docs.map((doc) => ({
           id: doc.id,
           data: doc.data(),
         }))
       )
-    );
+    )
+    .catch(function(error) {
+      alert("Error, Try again: ", error);
+  })
+  .finally(()=>{
+    setisUnivesrityloaded(true);
+  })
+ 
     return () => {
-      unsubscribe();
+    
     };
   }, []);
   const classes = useStyles();
@@ -45,7 +54,7 @@ function Search() {
   const [semId, setsemId] = useState(null);
   const [subId, setsubId] = useState(null);
 
-  const [university, setuniversity] = useState([]);
+  // const [university, setuniversity] = useState([]);
   const [branch, setbranch] = useState([]);
   const [semester, setsemester] = useState([]);
   const [subject, setsubject] = useState([]);
@@ -57,6 +66,16 @@ function Search() {
   const [semname, setsemname] = useState(null);
   const [subname, setsubname] = useState(null);
   // const [yearname, setyearname] = useState(null);
+
+  const [isUnivesrityloaded, setisUnivesrityloaded] = useState(false)
+  const [isBranchloaded, setisBranchloaded] = useState(false)
+  const [isSemloaded, setisSemloaded] = useState(false) 
+  const [isSubloaded, setisSubloaded] = useState(false)
+
+
+  const [isSearchDisable, setisSearchDisable] = useState(true)
+
+
   function customTheme(theme) {
     return {
       ...theme,
@@ -68,28 +87,42 @@ function Search() {
     };
   }
   const handleUniversityChange = (event) => {
+    if(event.target.value){
+      setisSearchDisable(true)
+      setisBranchloaded(true)
     setuniversityname(event.target.value)
     var val = datastore.filter((item) => {
-      return item.data.name == event.target.value;
+      return item.data.name === event.target.value;
     });
     setuniversityId(val[0].id);
     db.collection("university")
       .doc(val[0].id)
       .collection("branch")
-      .onSnapshot((snapshot) =>
+      .get()
+      .then((snapshot) =>
         setbranch(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             data: doc.data(),
           }))
         )
-      );
-    console.log("val", event.target.value);
+      )
+      .catch(function(error) {
+        alert("Error, Try again: ", error);
+    })
+    .finally(()=>{
+      setisBranchloaded(false)
+    })
+    // console.log("val", event.target.value);
+  }
   };
   const handleBranchChange = (event) => {
+    if(event.target.value){
+      setisSearchDisable(true)
+      setisSemloaded(true)
     setbranchname(event.target.value)
     var val = branch.filter((item) => {
-      return item.data.bname == event.target.value;
+      return item.data.bname === event.target.value;
     });
     setbranchId(val[0].id);
     db.collection("university")
@@ -97,19 +130,30 @@ function Search() {
       .collection("branch")
       .doc(val[0].id)
       .collection("semester")
-      .onSnapshot((snapshot) =>
+      .get()
+      .then((snapshot) =>
         setsemester(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             data: doc.data(),
           }))
         )
-      );
+      )
+      .catch(function(error) {
+        alert("Error, Try again: ", error);
+    })
+    .finally(()=>{
+      setisSemloaded(false);
+    })
+        }
   };
   const handleSemChange = (event) => {
+    if(event.target.value){
+      setisSearchDisable(true)
+      setisSubloaded(true)
     setsemname(event.target.value)
     var val = semester.filter((item) => {
-      return item.data.sem == event.target.value;
+      return item.data.sem === event.target.value;
     });
     setsemId(val[0].id);
     db.collection("university")
@@ -119,19 +163,28 @@ function Search() {
       .collection("semester")
       .doc(val[0].id)
       .collection("subject")
-      .onSnapshot((snapshot) =>
+      .get()
+      .then((snapshot) =>
         setsubject(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             data: doc.data(),
           }))
         )
-      );
+      )
+      .catch(function(error) {
+        alert("Error, Try again: ", error);
+    })
+    .finally(()=>{
+      setisSubloaded(false)
+    })
+        }
   };
   const handlesubjectChange = (event) => {
+    if(event.target.value){
     setsubname(event.target.value)
     var val = subject.filter((item) => {
-      return item.data.sname == event.target.value;
+      return item.data.sname === event.target.value;
     });
     setsubId(val[0].id);
     db.collection("university")
@@ -143,15 +196,22 @@ function Search() {
       .collection("subject")
       .doc(val[0].id)
       .collection("year")
-      .onSnapshot((snapshot) =>
+      .get()
+      .then((snapshot) =>
         setyear(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             data: doc.data(),
           }))
         ),
-        
-      );
+      )
+      .catch(function(error) {
+        alert("Error, Try again: ", error);
+    })
+    .finally(()=>{
+      setisSearchDisable(false)
+    })
+        }
   };
   return (
     <Container
@@ -162,8 +222,13 @@ function Search() {
       <FormControl className={classes.formControl}>
         <h5>University</h5>
         <div className="upload_select">
+        {!isUnivesrityloaded?
+          <select>
+          <option>Loading...</option>
+          </select>
+          :
         <select onChange={handleUniversityChange}>
-        <option>--select--</option>
+        <option value="">--select--</option>
           {datastore.map((item, index) => {
             return (
               <option key={index} value={item.data.id}>
@@ -171,14 +236,19 @@ function Search() {
               </option>
             );
           })}
-        </select>
+        </select>}
         </div>
       </FormControl>
       <FormControl className={classes.formControl}>
         <h5>Branch</h5>
         <div className="upload_select">
+        {isBranchloaded?
+          <select>
+          <option>Loading...</option>
+          </select>
+          :
         <select onChange={handleBranchChange}>
-        <option>--select--</option>
+        <option value="">--select--</option>
           {branch.map((item, index) => {
             return (
               <option key={index} value={item.data.id}>
@@ -186,37 +256,63 @@ function Search() {
               </option>
             );
           })}
+          {branch == ""?
+          <option value="">Select Previous data or No data present currenty</option>
+        : null}
         </select>
+
+      }
         </div>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <h5>Semester</h5>
+        <h5>Year/Semester</h5>
         <div className="upload_select">
+
+        {isSemloaded?
+          <select>
+          <option>Loading...</option>
+          </select>
+          :
         <select onChange={handleSemChange}>
-        <option>--select--</option>
-          {semester.map((item, index) => {
-            return (
-              <option key={index} value={item.data.id}>
-                {item.data.sem}
-              </option>
-            );
-          })}
+        <option value="">--select--</option>
+        {semester.map((item, index) => {
+          return (
+            <option key={index} value={item.data.id}>
+              {item.data.sem}
+            </option>
+          );
+        })}
+          {semester == ""?
+          <option value="">Select Previous data or No data present currenty</option>
+        : null}
         </select>
+
+      }
         </div>
       </FormControl>
       <FormControl className={classes.formControl}>
         <h5>Subject</h5>
         <div className="upload_select">
+        {isSubloaded?
+          <select>
+          <option>Loading...</option>
+          </select>
+          :
         <select onChange={handlesubjectChange}>
-        <option>--select--</option>
-          {subject.map((item, index) => {
-            return (
-              <option key={index} value={item.data.id}>
-                {item.data.sname}
-              </option>
-            );
-          })}
+        <option value="">--select--</option>
+        {subject.map((item, index) => {
+          return (
+            <option key={index} value={item.data.id}>
+              {item.data.sname}
+            </option>
+          );
+        })}
+          {subject == ""?
+          <option value="">Select Previous data or No data present currenty</option>
+        : null}
         </select>
+      }
+
         </div>
       </FormControl>
       {/*<FormControl className={classes.formControl}>
@@ -231,15 +327,15 @@ theme={customTheme}
       </FormControl>*/}
 
       <FormControl className={classes.formControl}>
-        <Link
-          to={{
-            pathname: "/qp",
-            state: { universityname, branchname, subname, semname, year, universityId, branchId, semId, subId },
-          }}
-        >
+    
           <Button
             variant="contained"
             color="primary"
+            disabled={isSearchDisable}
+            component={Link}  to={{
+              pathname: "/qp",
+              state: { universityname, branchname, subname, semname, year, universityId, branchId, semId, subId },
+            }}
             style={{
               display: "flex",
               paddingRight: "auto",
@@ -249,7 +345,7 @@ theme={customTheme}
           >
             Search
           </Button>
-        </Link>
+   
       </FormControl>
     </Container>
   );

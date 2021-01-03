@@ -1,6 +1,18 @@
 .app{
   height: 100vh;
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+body {
+  overflow-y: overlay;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .main_buttons{
   margin-top: auto;
 }
@@ -78,10 +90,12 @@ transition: background-color 1000ms linear;
   color: #fff;
   font-weight: bold;
   outline: none;
+  margin: 7px 3px;
 }
 .sign_header:hover{
   background-color: #f0f0f0;
   color: black;
+  margin: 7px 3px;
 }
 
 .footer_position{
@@ -96,6 +110,16 @@ transition: background-color 1000ms linear;
   margin-bottom: 40px;
   background-image: linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%);
   box-shadow: 0 4px 10px 0 rgba(0,0,0,.25);
+}
+.footer_position> button{
+  position: absolute;
+  top:-18px;
+  right: -18px;
+  outline: none;
+  border: none;
+  /* box-shadow:1px 30px 8px #f0f0f0; */
+  /* border-radius: 50%; */
+  background-color: transparent;
 }
 .footer_text{
   /* width: 30px; */
@@ -143,4 +167,88 @@ transition: background-color 1000ms linear;
   margin-right: auto;
   margin-left: auto;
   margin-bottom: 5px;
+}
+.CenterIcon{
+  display: flex;
+  flex-direction: column;
+  background-color: #2727275c;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-size: 30px;
+  min-width: 60px;
+  color: #fff;
+}
+.IconInside{
+  align-self: center;
+  /* background-color: #2727275c;
+  padding: 5px 15px;
+  border-radius: 5px; */
+}
+.CenterIcon > p{
+text-align: center;
+font-size: small;
+}
+
+.CenterIcon:hover{
+  background-color: #fdf9f95c;
+  /* padding: 5px 15px;
+  border-radius: 5px;
+  font-size: 50px; */
+}
+.activeRoute{
+  border-bottom:  solid #1c1e21;
+  border-bottom-width: 7px;  
+}
+
+@media screen and (max-width: 600px) {
+  .CenterIcon{
+    padding: 2px 5px;
+    font-size: 20px;
+    min-width: 35px;
+    background-color: transparent;
+  }
+  .CenterIcon:hover{
+    background-color: transparent;
+  }
+  .IconInside{
+    align-self: center;
+    background-color: #2727275c;
+    padding: 5px;
+    border-radius: 50%;
+    /* padding: 5px 15px;
+    border-radius: 5px;  */
+  }
+  .CenterIcon > p{
+    text-align: center;
+    font-size: small;
+    }
+    .activeRoute{
+      background-color: #1c1e2165;
+      border-bottom:  solid #1c1e21;
+      border-bottom-width: 7px;  
+    }
+    .sign_header{
+      background-color: #1c1e21;
+      padding: 5px;
+      border-radius: 10px;
+      border: none;
+      font-size: small;
+      color: #fff;
+      font-weight: bold;
+      outline: none;
+      margin: 7px 0px;
+    }
+    .footer_position{
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      background-color: aqua;
+      width: 80%;
+      padding: 20px;
+      border-radius: 10px;
+      margin-right: 20px;
+      margin-bottom: 40px;
+      background-image: linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%);
+      box-shadow: 0 4px 10px 0 rgba(0,0,0,.25);
+    }
 }

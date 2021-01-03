@@ -79,6 +79,10 @@ function Uplaod() {
 
   const handleUniversityChange = (event) => {
     setisBranchdisabled(false)
+    setisSemdisabled(true)
+    setisSubdisabled(true)
+    setisYeardisabled(true)
+    setisUplaoddisabled(true)
     setuniversityname(event.target.value)
     var val = datastore.filter((item) => {
       return item.data.name === event.target.value;
@@ -100,6 +104,9 @@ function Uplaod() {
   };
   const handleBranchChange = (event) => {
     setisSemdisabled(false)
+    setisSubdisabled(true)
+    setisYeardisabled(true)
+    setisUplaoddisabled(true)
     setbranchname(event.target.value)
     var val = branch.filter((item) => {
       return item.data.bname === event.target.value;
@@ -121,6 +128,8 @@ function Uplaod() {
   };
   const handleSemChange = (event) => {
     setisSubdisabled(false)
+    setisYeardisabled(true)
+    setisUplaoddisabled(true)
     setsemname(event.target.value)
     var val = semester.filter((item) => {
       return item.data.sem === event.target.value;
@@ -144,6 +153,7 @@ function Uplaod() {
   };
   const handlesubjectChange = (event) => {
     setisYeardisabled(false)
+    setisUplaoddisabled(true)
     setsubname(event.target.value)
     var val = subject.filter((item) => {
       return item.data.sname === event.target.value;
@@ -313,6 +323,7 @@ function Uplaod() {
         .collection("link")
         .add({
           link: link,
+          isverifed : false
         });
     }
   };
@@ -325,9 +336,11 @@ function Uplaod() {
       <FormControl className={classes.formControl}>
         <h5>University</h5>
         <div className="upload_select">
+        {datastore==""?
+          <select>
+          <option>Loading...</option></select>
+      :
         <select onChange={handleUniversityChange}>
-        {datastore?
-          <>
           <option>--select--</option>
           {datastore.map((item, index) => {
             return (
@@ -336,10 +349,7 @@ function Uplaod() {
               </option>
             );
           })}
-          </>
-          :<option>Loading...</option>
-        }
-        </select>
+        </select>}
         <div className="add_button">
         <button onClick={adduniversity}>+</button>
         <p>add university</p>
@@ -350,9 +360,11 @@ function Uplaod() {
       <FormControl className={classes.formControl}>
         <h5>Branch</h5>
         <div className="upload_select">
+        {!isBranchLoaded?
+        <select disabled={isBranchdisabled}>
+        <option>Loading...</option></select>
+    :
         <select onChange={handleBranchChange} disabled={isBranchdisabled}>
-        {isBranchLoaded?
-          <>
           <option>--select--</option>
           {branch.map((item, index) => {
             return (
@@ -361,10 +373,8 @@ function Uplaod() {
               </option>
             );
           })}
-          </>
-          :<option>Loading...</option>
-        }
         </select>
+        }
         <div className="add_button">
         <button onClick={addbranch} disabled={isBranchdisabled}>+</button>
         <p>add Branch</p>
@@ -373,7 +383,7 @@ function Uplaod() {
       </FormControl>
 
       <FormControl className={classes.formControl}>
-        <h5>Semester</h5>
+        <h5>Year/Semester</h5>
         <div className="upload_select">
         <select onChange={handleSemChange} disabled={isSemdisabled}>
           <option>--select--</option>
