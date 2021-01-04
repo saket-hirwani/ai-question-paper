@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Container, Button, Modal, TextareaAutosize, TextField } from "@material-ui/core";
+import {
+  Container,
+  Button,
+  Modal,
+  TextareaAutosize,
+  TextField,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 // import InputLabel from "@material-ui/core/InputLabel";
 // import MenuItem from "@material-ui/core/MenuItem";
@@ -10,7 +16,8 @@ import FormControl from "@material-ui/core/FormControl";
 // import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DoneIcon from "@material-ui/icons/Done";
-import Tesseract from 'tesseract.js';
+import Tesseract from "tesseract.js";
+import {PDFtoIMG} from 'react-pdf-to-image';
 
 import db, { storage } from "../firebase";
 const Uplaod = () => {
@@ -32,19 +39,16 @@ const Uplaod = () => {
 
   const classes = useStyles();
   const [datastore, setdatastore] = useState([]);
-  const src = 'sample.png'
+  const src = "sample.png";
 
   const ocrFunction = () => {
-    Tesseract.recognize(
-      OcrImage,
-      'eng',
-      { logger: m => console.log(m) }
-    ).then(({ data: { text } }) => {
-      // console.log(text);
-      setResText(text)
-    })
-      .catch(e => console.log(e))
-  }
+    Tesseract.recognize(OcrImage, "eng", { logger: (m) => console.log(m) })
+      .then(({ data: { text } }) => {
+        // console.log(text);
+        setResText(text);
+      })
+      .catch((e) => console.log(e));
+  };
 
   useEffect(() => {
     // ocrFunction();
@@ -55,13 +59,12 @@ const Uplaod = () => {
           data: doc.data(),
         }))
       )
-    )
+    );
 
     return () => {
       unsubscribe();
-    }
+    };
   }, []);
-
 
   const [universityId, setuniversityId] = useState(null);
   const [branchId, setbranchId] = useState(null);
@@ -93,19 +96,16 @@ const Uplaod = () => {
 
   const [isBranchLoaded, setisBranchLoaded] = useState(false);
 
-  const [OcrImage, setOcrImage] = useState(null)
-  const [resText, setResText] = useState()
-
-
-
+  const [OcrImage, setOcrImage] = useState(null);
+  const [resText, setResText] = useState();
 
   const handleUniversityChange = (event) => {
-    setisBranchdisabled(false)
-    setisSemdisabled(true)
-    setisSubdisabled(true)
-    setisYeardisabled(true)
-    setisUplaoddisabled(true)
-    setuniversityname(event.target.value)
+    setisBranchdisabled(false);
+    setisSemdisabled(true);
+    setisSubdisabled(true);
+    setisYeardisabled(true);
+    setisUplaoddisabled(true);
+    setuniversityname(event.target.value);
     var val = datastore.filter((item) => {
       return item.data.name === event.target.value;
     });
@@ -113,23 +113,24 @@ const Uplaod = () => {
     db.collection("university")
       .doc(val[0].id)
       .collection("branch")
-      .onSnapshot((snapshot) =>
-        setbranch(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        ),
+      .onSnapshot(
+        (snapshot) =>
+          setbranch(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          ),
         setisBranchLoaded(true)
-      )
+      );
     // console.log("val", event.target.value);
   };
   const handleBranchChange = (event) => {
-    setisSemdisabled(false)
-    setisSubdisabled(true)
-    setisYeardisabled(true)
-    setisUplaoddisabled(true)
-    setbranchname(event.target.value)
+    setisSemdisabled(false);
+    setisSubdisabled(true);
+    setisYeardisabled(true);
+    setisUplaoddisabled(true);
+    setbranchname(event.target.value);
     var val = branch.filter((item) => {
       return item.data.bname === event.target.value;
     });
@@ -146,13 +147,13 @@ const Uplaod = () => {
             data: doc.data(),
           }))
         )
-      )
+      );
   };
   const handleSemChange = (event) => {
-    setisSubdisabled(false)
-    setisYeardisabled(true)
-    setisUplaoddisabled(true)
-    setsemname(event.target.value)
+    setisSubdisabled(false);
+    setisYeardisabled(true);
+    setisUplaoddisabled(true);
+    setsemname(event.target.value);
     var val = semester.filter((item) => {
       return item.data.sem === event.target.value;
     });
@@ -174,9 +175,9 @@ const Uplaod = () => {
       );
   };
   const handlesubjectChange = (event) => {
-    setisYeardisabled(false)
-    setisUplaoddisabled(true)
-    setsubname(event.target.value)
+    setisYeardisabled(false);
+    setisUplaoddisabled(true);
+    setsubname(event.target.value);
     var val = subject.filter((item) => {
       return item.data.sname === event.target.value;
     });
@@ -201,8 +202,8 @@ const Uplaod = () => {
   };
 
   const handleyearChange = (event) => {
-    setisUplaoddisabled(false)
-    setyearname(event.target.value)
+    setisUplaoddisabled(false);
+    setyearname(event.target.value);
     var val = year.filter((item) => {
       return item.data.year === event.target.value;
     });
@@ -224,12 +225,10 @@ const Uplaod = () => {
     }
   };
 
-
-
   const handleupload = () => {
     if (universityId && branchId && semId && subId && yearId) {
-      console.log(universityId, branchId, semId, subId, yearId)
-      setisShow(true)
+      console.log(universityId, branchId, semId, subId, yearId);
+      setisShow(true);
       var today = new Date();
       var todaytime =
         today.getHours().toLocaleString() +
@@ -252,17 +251,15 @@ const Uplaod = () => {
             .child(file.name)
             .getDownloadURL()
             .then((url) => {
-              seturl(url)
-              addFileLink(url)
+              seturl(url);
+              addFileLink(url);
             });
         }
       );
-    }
-    else {
-      alert("Please Select all sections..")
+    } else {
+      alert("Please Select all sections..");
     }
   };
-
 
   const adduniversity = () => {
     const universityname = prompt("enter university");
@@ -346,27 +343,38 @@ const Uplaod = () => {
         .collection("link")
         .add({
           link: link,
-          isverifed: false
+          isverifed: false,
         });
     }
   };
+
+  const pdftojpg = () => {
+    console.log("dsada")
+    
+  }
   return (
     <Container
       maxWidth="lg"
-      style={{ backgroundColor: "lightgray", height: "90vh", paddingTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}
+      style={{
+        backgroundColor: "lightgray",
+        height: "90vh",
+        paddingTop: 10,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+      }}
     >
-      <div style={{ width: '50%' }} >
+      <div style={{ width: "50%" }}>
         <h1 style={{ textAlign: "center" }}>Upload Question Paper</h1>
         <h3 style={{ textAlign: "center" }}>Select your university details</h3>
         <FormControl className={classes.formControl}>
-
           <h5>University</h5>
           <div className="upload_select">
-
-            {datastore == "" ?
+            {datastore == "" ? (
               <select>
-                <option>Loading...</option></select>
-              :
+                <option>Loading...</option>
+              </select>
+            ) : (
               <select onChange={handleUniversityChange}>
                 <option>--select--</option>
                 {datastore.map((item, index) => {
@@ -376,7 +384,8 @@ const Uplaod = () => {
                     </option>
                   );
                 })}
-              </select>}
+              </select>
+            )}
             <div className="add_button">
               <button onClick={adduniversity}>+</button>
               <p>add university</p>
@@ -387,10 +396,11 @@ const Uplaod = () => {
         <FormControl className={classes.formControl}>
           <h5>Branch</h5>
           <div className="upload_select">
-            {!isBranchLoaded ?
+            {!isBranchLoaded ? (
               <select disabled={isBranchdisabled}>
-                <option>Loading...</option></select>
-              :
+                <option>Loading...</option>
+              </select>
+            ) : (
               <select onChange={handleBranchChange} disabled={isBranchdisabled}>
                 <option>--select--</option>
                 {branch.map((item, index) => {
@@ -401,9 +411,11 @@ const Uplaod = () => {
                   );
                 })}
               </select>
-            }
+            )}
             <div className="add_button">
-              <button onClick={addbranch} disabled={isBranchdisabled}>+</button>
+              <button onClick={addbranch} disabled={isBranchdisabled}>
+                +
+              </button>
               <p>add Branch</p>
             </div>
           </div>
@@ -423,7 +435,9 @@ const Uplaod = () => {
               })}
             </select>
             <div className="add_button">
-              <button onClick={addsemester} disabled={isSemdisabled}>+</button>
+              <button onClick={addsemester} disabled={isSemdisabled}>
+                +
+              </button>
               <p>add Semester</p>
             </div>
           </div>
@@ -443,7 +457,9 @@ const Uplaod = () => {
               })}
             </select>
             <div className="add_button">
-              <button onClick={addsubject} disabled={isSubdisabled}>+</button>
+              <button onClick={addsubject} disabled={isSubdisabled}>
+                +
+              </button>
               <p>add Subject</p>
             </div>
           </div>
@@ -463,7 +479,9 @@ const Uplaod = () => {
               })}
             </select>
             <div className="add_button">
-              <button onClick={addyear} disabled={isYeardisabled}>+</button>
+              <button onClick={addyear} disabled={isYeardisabled}>
+                +
+              </button>
               <p>add Year</p>
             </div>
           </div>
@@ -473,23 +491,28 @@ const Uplaod = () => {
           <h5 style={{ marginBottom: 5 }}>Upload</h5>
           <div className="upload_button">
             <input type="file" onChange={handleFileChange} style={{}} />
-            <button onClick={handleupload} disabled={isUplaoddisabled}>Uplaod</button>
-            {isShow ?
-              (uploadprogress === 100 ? (
+            <button onClick={handleupload} disabled={isUplaoddisabled}>
+              Uplaod
+            </button>
+            {isShow ? (
+              uploadprogress === 100 ? (
                 <div>
                   <DoneIcon />
                   <a href={url} rel="noopener noreferrer" target="_blank">
                     <button>view file</button>
                   </a>
                 </div>
-              ) : (<div><p>{uploadprogress}% completed</p>
-                <CircularProgress variant="determinate" value={uploadprogress} />
-              </div>
-                )) : null
-            }
-
+              ) : (
+                <div>
+                  <p>{uploadprogress}% completed</p>
+                  <CircularProgress
+                    variant="determinate"
+                    value={uploadprogress}
+                  />
+                </div>
+              )
+            ) : null}
           </div>
-
         </FormControl>
 
         <FormControl className={classes.formControl}>
@@ -505,50 +528,118 @@ const Uplaod = () => {
               }}
             >
               Send to verify
-          </Button>
+            </Button>
           </Link>{" "}
+          <Button
+              variant="contained"
+              color="secondary"
+              onClick={pdftojpg}
+              style={{
+                display: "flex",
+                paddingRight: "auto",
+                paddingLeft: "auto",
+                width: "100%",
+              }}
+            >
+             pdf to image
+            </Button>
         </FormControl>
-      </div>
-      <div style={{ marginTop: '10%', marginRight: 40, marginLeft: -20 }}>Or</div>
-      <div style={{ width: '45%', height: '70%' }} >
-        <h1 style={{ textAlign: "center" }}>Upload Question</h1>
-        <h3 style={{ textAlign: "center" }}>Enter your question or scan an image</h3>
-        <div style={{ width: "100%", height: "100%", flex: 1, backgroundColor: 'white', alignItems: 'center' }} >
-          <div style={{ backgroundColor: '#dedede', width: '100%', height: '100%', alignContent: 'center', }} >
-            <div style={{ height: 10, width: '100%' }} />
-            <div style={{ display: 'flex', flex: 4, height: '70%', borderWidth: 10, borderColor: 'black', borderRadius: 10, backgroundColor: 'white', marginInline: 10, }} >
 
+      </div>
+      <div style={{ marginTop: "10%", marginRight: 40, marginLeft: -20 }}>
+        Or
+      </div>
+      <div style={{ width: "45%", height: "70%" }}>
+        <h1 style={{ textAlign: "center" }}>Upload Question</h1>
+        <h3 style={{ textAlign: "center" }}>
+          Enter your question or scan an image
+        </h3>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            flex: 1,
+            backgroundColor: "white",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#dedede",
+              width: "100%",
+              height: "100%",
+              alignContent: "center",
+            }}
+          >
+            <div style={{ height: 10, width: "100%" }} />
+            <div
+              style={{
+                display: "flex",
+                flex: 4,
+                height: "70%",
+                borderWidth: 10,
+                borderColor: "black",
+                borderRadius: 10,
+                backgroundColor: "white",
+                marginInline: 10,
+              }}
+            >
               {/* =========================textArea=============================== */}
 
               <TextareaAutosize
                 placeholder="enter your question here"
                 rowsMax={4}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: "100%", height: "100%", overflow:'scroll' }}
                 value={resText}
-                onChange={(event)=>setResText(event.target.value)}
-
+                onChange={(event) => setResText(event.target.value)}
               />
               {/* <input type="textarea" name="edited_text" value={resText} rowsMax={10} style={{width:'98%'}} /> */}
             </div>
-            <div style={{ flex: 1, marginInline: 10, marginTop: 10, alignItems: 'center', display: 'flex', flexDirection: "column" }} >
-              <text style={{}} > Scan an image for question  </text>
-              <input type="file" accept="image/*" 
-              onChange={(e) =>{
-              if (e.target.files[0]) {
-                setOcrImage(e.target.files[0]);
-              }
-              }}/>
-              <button style={{ marginTop: '1.5%', fontSize: 18, width: '40%' }} 
-              onClick={()=>ocrFunction()} disabled={OcrImage==null} >
+            <div
+              style={{
+                flex: 1,
+                marginInline: 10,
+                marginTop: 10,
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <text style={{}}> Scan an image for question </text>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    setOcrImage(e.target.files[0]);
+                  }
+                }}
+              />
+              <button
+                style={{ marginTop: "1.5%", fontSize: 18, width: "40%" }}
+                onClick={() => ocrFunction()}
+                disabled={OcrImage == null}
+              >
                 Scan
               </button>
-              <button style={{ marginTop: '1.5%', fontSize: 18, backgroundColor: 'red', color: 'white', width: '40%' }} onClick={()=>console.log(resText)} >submit</button>
+              <button
+                style={{
+                  marginTop: "1.5%",
+                  fontSize: 18,
+                  backgroundColor: "red",
+                  color: "white",
+                  width: "40%",
+                }}
+                onClick={() => console.log(resText)}
+              >
+                submit
+              </button>
             </div>
           </div>
         </div>
       </div>
     </Container>
   );
-}
+};
 
 export default Uplaod;
