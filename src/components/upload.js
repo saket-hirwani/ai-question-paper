@@ -17,7 +17,6 @@ import FormControl from "@material-ui/core/FormControl";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DoneIcon from "@material-ui/icons/Done";
 import Tesseract from "tesseract.js";
-import {PDFtoIMG} from 'react-pdf-to-image';
 
 import db, { storage } from "../firebase";
 const Uplaod = () => {
@@ -347,11 +346,6 @@ const Uplaod = () => {
         });
     }
   };
-
-  const pdftojpg = () => {
-    console.log("dsada")
-    
-  }
   return (
     <Container
       maxWidth="lg"
@@ -530,21 +524,7 @@ const Uplaod = () => {
               Send to verify
             </Button>
           </Link>{" "}
-          <Button
-              variant="contained"
-              color="secondary"
-              onClick={pdftojpg}
-              style={{
-                display: "flex",
-                paddingRight: "auto",
-                paddingLeft: "auto",
-                width: "100%",
-              }}
-            >
-             pdf to image
-            </Button>
         </FormControl>
-
       </div>
       <div style={{ marginTop: "10%", marginRight: 40, marginLeft: -20 }}>
         Or
