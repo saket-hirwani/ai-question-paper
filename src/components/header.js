@@ -21,7 +21,7 @@ import { useStateValue } from "../StateProvider";
 import { auth, provider } from "../firebase";
 import { actionTypes } from "../reducer";
 import { Link, NavLink } from "react-router-dom";
-
+ 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -121,6 +121,7 @@ export default function Header() {
           type: actionTypes.SET_USER,
           user: result.user,
         });
+        localStorage.setItem("user",  JSON.stringify(result.user));
       })
       .catch((e) => alert(e.message));
   };
@@ -152,6 +153,9 @@ export default function Header() {
       <Link to="/profile">
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       </Link>
+      <Link to="/admin">
+      <MenuItem onClick={handleMenuClose}>Admin</MenuItem>
+    </Link>
       <MenuItem onClick={signOut}>Logout</MenuItem>
     </Menu>
   );
