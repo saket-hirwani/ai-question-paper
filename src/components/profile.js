@@ -42,9 +42,13 @@ function Profile() {
     firstName: 'Katarina',
     lastName: 'Smith',
     email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
+    University: '',
+    Branch : '',
+    sem : '',
+    sub1 : '',
+    sub2 : '',
+    sub3 : '',
+
   });
 
   const changefirst = () =>{
@@ -99,25 +103,11 @@ function Profile() {
           >
             {user.email}
           </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            12:12 PM
-          </Typography>
+          
         </Box>
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Change picture
-        </Button>
-      </CardActions>
+    
     </Card>
         </div>
           </Grid>
@@ -132,110 +122,110 @@ function Profile() {
       noValidate
      
     >
-      <Card>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
-        <Divider />
-        <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the University"
-                label="University"
-                name="University"
-                onChange={handleChange}
-                required
-                // value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Branch"
-                name="Branch"
-                onChange={handleChange}
-                required
-                // value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Semester/Year"
-                name="sem"
-                onChange={handleChange}
-                required
-                // value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Favourite Subject 1"
-                name="sub"
-                onChange={handleChange}
-                required
-                // value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Favourite Subject 2"
-                name="sub"
-                onChange={handleChange}
-                required
-                // value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Favourite Subject 3"
-                name="sub"
-                onChange={handleChange}
-                required
-                // value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
+    <Card>
+    <CardHeader
+      subheader="The information can be edited"
+      title="Profile"
+    />
+    <Divider />
+    <CardContent>
+      <Grid
+        container
+        spacing={3}
+      >
+        <Grid
+          item
+          md={6}
+          xs={12}
+        >
+          <TextField
+            fullWidth
+            helperText="Please specify the University"
+            label="University"
+            name="University"
+            onChange={handleChange}
+            required
+            value={values.University}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid
+          item
+          md={6}
+          xs={12}
+        >
+          <TextField
+            fullWidth
+            label="Branch"
+            name="Branch"
+            onChange={handleChange}
+            required
+            value={values.Branch}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid
+          item
+          md={6}
+          xs={12}
+        >
+          <TextField
+            fullWidth
+            label="Semester/Year"
+            name="sem"
+            onChange={handleChange}
+            required
+            value={values.sem}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid
+          item
+          md={6}
+          xs={12}
+        >
+          <TextField
+            fullWidth
+            label="Favourite Subject 1"
+            name="sub1"
+            onChange={handleChange}
+            required
+            value={values.sub1}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid
+          item
+          md={6}
+          xs={12}
+        >
+          <TextField
+            fullWidth
+            label="Favourite Subject 2"
+            name="sub2"
+            onChange={handleChange}
+            required
+            value={values.sub2}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid
+          item
+          md={6}
+          xs={12}
+        >
+          <TextField
+            fullWidth
+            label="Favourite Subject 3"
+            name="sub3"
+            onChange={handleChange}
+            required
+            value={values.sub3}
+            variant="outlined"
+          />
+        </Grid>
+      </Grid>
+    </CardContent>
         <Divider />
         <Box
           display="flex"

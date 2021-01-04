@@ -62,7 +62,7 @@ if(!isloaded){
 else if(filelink==""){
   return(
       <div style={{marginTop:100,textAlign:'center'}}>
-  <p>No data found.</p>
+  <p>Verification Pending</p>
   </div>
   )
 }
