@@ -11,11 +11,22 @@ import Profile from "./components/profile";
 import DownloadFile from "./components/download";
 import { Switch, Route } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
+import Tesseract from 'tesseract.js';
 
 function App() {
   const [{ user, userfirst }] = useStateValue();
-  var Tesseract = window.Tesseract;
-  // console.log(user);
+
+  // useEffect(() => {
+  //   Tesseract.recognize(
+  //     'sample2.png',
+  //     'eng',
+  //     { logger: m => console.log(m) }
+  //   ).then(({ data: { text } }) => {
+  //     console.log(text);
+  //   })
+  //   .catch(e=>console.log(e))
+  // },[])
+
 
   return (
     <div className="app">
