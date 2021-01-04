@@ -6,8 +6,10 @@ import Footer from "./components/footer";
 import Search from "./components/search";
 import Upload from "./components/upload";
 import Qpaper from "./components/qpaper";
+import Verify from "./components/verify";
 import Login from "./components/login";
 import Profile from "./components/profile";
+import Admin from "./components/admin";
 import DownloadFile from "./components/download";
 import { Switch, Route } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
@@ -41,7 +43,8 @@ function App() {
             <Route path="/" component={Home} exact />
             <Route path="/qp" component={Qpaper} />
             <Route path="/profile" component={Profile} />
-            
+            <Route path="/admin" component={Admin} />
+            <Route path="/verify" component={Verify} />
             <Route path="/download" component={DownloadFile} />
             {/* 
                 <Home/>

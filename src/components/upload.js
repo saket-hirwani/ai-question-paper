@@ -70,6 +70,7 @@ const Uplaod = () => {
   const [semId, setsemId] = useState(null);
   const [subId, setsubId] = useState(null);
   const [yearId, setyearId] = useState(null);
+  const [linkId, setlinkId] = useState(null);
 
   const [universityname, setuniversityname] = useState(null);
   const [branchname, setbranchname] = useState(null);
@@ -226,14 +227,14 @@ const Uplaod = () => {
 
   const handleupload = () => {
     if (universityId && branchId && semId && subId && yearId) {
-      console.log(universityId, branchId, semId, subId, yearId);
+      // console.log(universityId, branchId, semId, subId, yearId);
       setisShow(true);
       var today = new Date();
       var todaytime =
         today.getHours().toLocaleString() +
         today.getMinutes().toLocaleString() +
         today.getSeconds().toLocaleString();
-      const upload = storage.ref(`images/${file.name}`).put(file);
+      const upload = storage.ref(`Papers/${file.name}`).put(file);
       upload.on(
         "state_changed",
         (snapshot) => {
@@ -246,7 +247,7 @@ const Uplaod = () => {
         },
         () => {
           storage
-            .ref("images")
+            .ref("Papers")
             .child(file.name)
             .getDownloadURL()
             .then((url) => {
@@ -260,6 +261,31 @@ const Uplaod = () => {
     }
   };
 
+  const verifybtn = () => {
+    // const [universityId, setuniversityId] = useState(null);
+    // const [branchId, setbranchId] = useState(null);
+    // const [semId, setsemId] = useState(null);
+    // const [subId, setsubId] = useState(null);
+    // const [yearId, setyearId] = useState(null);
+
+    if ((universityId, branchId, semId, subId, yearId, linkId)) {
+      db.collection("verify").add({
+        name: universityname,
+        universityId: universityId,
+        branchId: branchId,
+        semId: semId,
+        subId: subId,
+        yearId: yearId,
+        linkId: linkId,
+        isverified : false
+      }).then(()=>{
+        alert("Successfully send for verification.")
+      }
+      )
+    } else {
+      alert("Please fill all details!!")
+    }
+  };
   const adduniversity = () => {
     const universityname = prompt("enter university");
     if (universityname) {
@@ -327,7 +353,7 @@ const Uplaod = () => {
   };
 
   const addFileLink = (link) => {
-    console.log("link", link);
+    // console.log("link", link);
     if (link) {
       db.collection("university")
         .doc(universityId)
@@ -343,6 +369,12 @@ const Uplaod = () => {
         .add({
           link: link,
           isverifed: false,
+        })
+        .then(function (docRef) {
+          setlinkId(docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding link: ", error);
         });
     }
   };

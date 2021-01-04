@@ -81,6 +81,10 @@ transition: background-color 1000ms linear;
   border-radius: 25px;
   background-color: #c4c4c4;
 }
+
+.admin_text  h4{
+  margin-top: 50px;
+}
 .sign_header{
   background-color: transparent;
   padding: 5px;
@@ -251,4 +255,20 @@ font-size: small;
       background-image: linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%);
       box-shadow: 0 4px 10px 0 rgba(0,0,0,.25);
     }
+}
+.admin_container{
+  text-align: center;
+}
+.admin_container>h3 {
+  padding: 15px;
+}
+.linksVerify{
+  display: grid;
+  margin-right: auto;
+  margin-left: auto;
+}
+.linksVerify > p{
+  /* width: 40%; */
+  padding: 10px;
+  /* border: 1px solid black; */
 }

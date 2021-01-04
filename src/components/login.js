@@ -1,43 +1,47 @@
-import React,{button} from 'react'
-import { auth, provider } from '../firebase';
-import { useStateValue } from '../StateProvider';
-import { actionTypes } from '../reducer';
+import React, { button } from "react";
+import { auth, provider } from "../firebase";
+import { useStateValue } from "../StateProvider";
+import { actionTypes } from "../reducer";
+import { Link } from "react-router-dom";
 // import firebase from 'firebase';
 function Login() {
-    const [{user}, dispatch] = useStateValue();
-    const signIn =() =>{
-        // auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-        auth.signInWithPopup(provider).then(result =>
-            {
-                return(
-                dispatch({
-                    type: actionTypes.SET_USER,
-                    user: result.user,
-                }),
-                localStorage.setItem("user",  JSON.stringify(result.user))
-                )
-            }
-            )
-            .catch(
-                (e)=>alert(e.message)
-            );
-    }
-    return (
-        <div className="login">
-        <div className="login_container">
-       
+  const [{ user }, dispatch] = useStateValue();
+  const signIn = () => {
+    // auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        return (
+          dispatch({
+            type: actionTypes.SET_USER,
+            user: result.user,
+          }),
+          localStorage.setItem("user", JSON.stringify(result.user))
+        );
+      })
+      .catch((e) => alert(e.message));
+  };
+  return (
+    <div className="login">
+      <div className="login_container">
         <div className="login_text">
-        <h1>Welcome</h1>
-        <h1>Sign in to Question Paper App</h1></div>
+          <h1>Welcome</h1>
+          <h1>Sign in to Question Paper App</h1>
+        </div>
         <button onClick={signIn}>
-                <img
-                src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-vector-graphic-pixabay-15.png"
-                height="50px"
-                alt="logo"/>
+          <img
+            src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-vector-graphic-pixabay-15.png"
+            height="50px"
+            alt="logo"
+          />
         </button>
+        <hr/>
+        <div className="admin_text">
+          <Link to="/admin"><h4>Admin Login</h4></Link>
         </div>
-        </div>
-    )
+      </div>
+    </div>
+  );
 }
 
-export default Login
+export default Login;
