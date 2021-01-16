@@ -617,7 +617,7 @@ const Uplaod = () => {
                 flexDirection: "column",
               }}
             >
-              <text style={{}}> Scan an image for question </text>
+              <p style={{}}> Scan an image for question </p>
               <input
                 type="file"
                 accept="image/*"

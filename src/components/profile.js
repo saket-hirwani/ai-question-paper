@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Avatar,
   Box,
@@ -17,7 +17,7 @@ import {
 import { useStateValue } from '../StateProvider';
 import { actionTypes } from '../reducer';
 import {Link} from "react-router-dom";
-
+import db from "../firebase";
 // const user = {
 //   avatar: '/static/images/avatars/avatar_6.png',
 //   city: 'Los Angeles',
@@ -37,11 +37,10 @@ const useStyles = makeStyles(() => ({
 function Profile() {
     const [{user}] = useStateValue();
     const [{}, dispatch] = useStateValue();
+    const [datastore, setdatastore] = useState([]);
     const classes = useStyles();
     const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
+    name: user.displayName,
     University: '',
     Branch : '',
     sem : '',
@@ -50,6 +49,23 @@ function Profile() {
     sub3 : '',
 
   });
+
+  useEffect(() => {
+    // ocrFunction();
+    const unsubscribe = db.collection("users").onSnapshot((snapshot) =>
+      setdatastore(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      )
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
 
   const changefirst = () =>{
         dispatch({
