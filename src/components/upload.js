@@ -542,20 +542,19 @@ const Uplaod = () => {
         </FormControl>
 
         <FormControl className={classes.formControl}>
-          <Link to="/qp">
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{
-                display: "flex",
-                paddingRight: "auto",
-                paddingLeft: "auto",
-                width: "100%",
-              }}
-            >
-              Send to verify
-            </Button>
-          </Link>{" "}
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={verifybtn}
+          style={{
+            display: "flex",
+            paddingRight: "auto",
+            paddingLeft: "auto",
+            width: "100%",
+          }}
+        >
+          Send to verify
+        </Button>
         </FormControl>
       </div>
       <div style={{ marginTop: "10%", marginRight: 40, marginLeft: -20 }}>
