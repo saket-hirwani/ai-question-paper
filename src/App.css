@@ -291,6 +291,6 @@ font-size: small;
 }} */
 
 .btn-inline{
-  display: inline;
+  display: flex;
   justify-content: space-around;
 }

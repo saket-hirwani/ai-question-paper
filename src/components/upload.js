@@ -14,6 +14,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 // import Select from "@material-ui/core/Select";
 // import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DoneIcon from "@material-ui/icons/Done";
 import Tesseract from "tesseract.js";
@@ -21,6 +24,9 @@ import Tesseract from "tesseract.js";
 import db, { storage } from "../firebase";
 const Uplaod = () => {
   const useStyles = makeStyles((theme) => ({
+    root: {
+    width: '100%',
+  },
     formControl: {
       margin: theme.spacing(1),
       // minWidth: 120,
@@ -38,10 +44,11 @@ const Uplaod = () => {
 
   const classes = useStyles();
   const [datastore, setdatastore] = useState([]);
+  const [progress, setProgress] = React.useState(0);
   const src = "sample.png";
 
   const ocrFunction = () => {
-    Tesseract.recognize(OcrImage, "eng", { logger: (m) => console.log(m) })
+    Tesseract.recognize(OcrImage, "eng", { logger: (m) =>  {(m.status == "recognizing text")? setProgress(m.progress*100):setProgress(0)} })
       .then(({ data: { text } }) => {
         // console.log(text);
         setResText(text);
@@ -49,8 +56,25 @@ const Uplaod = () => {
       .catch((e) => console.log(e));
   };
 
+  function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
   useEffect(() => {
     // ocrFunction();
+
+
     const unsubscribe = db.collection("university").onSnapshot((snapshot) =>
       setdatastore(
         snapshot.docs.map((doc) => ({
@@ -62,6 +86,7 @@ const Uplaod = () => {
 
     return () => {
       unsubscribe();
+     
     };
   }, []);
 
@@ -99,8 +124,11 @@ const Uplaod = () => {
   const [OcrImage, setOcrImage] = useState(null);
   const [resText, setResText] = useState();
 
+  const [ShowScan, setShowScan] = useState(false);
+  const [ShowUpload, setShowUpload] = useState(false);
+
   const handleUniversityChange = (event) => {
-    setisBranchLoaded(false)////
+    setisBranchLoaded(false); ////
     setisBranchdisabled(false);
     setisSemdisabled(true);
     setisSubdisabled(true);
@@ -270,21 +298,22 @@ const Uplaod = () => {
     // const [yearId, setyearId] = useState(null);
 
     if ((universityId, branchId, semId, subId, yearId, linkId)) {
-      db.collection("verify").add({
-        name: universityname,
-        universityId: universityId,
-        branchId: branchId,
-        semId: semId,
-        subId: subId,
-        yearId: yearId,
-        linkId: linkId,
-        isverified : false
-      }).then(()=>{
-        alert("Successfully send for verification.")
-      }
-      )
+      db.collection("verify")
+        .add({
+          name: universityname,
+          universityId: universityId,
+          branchId: branchId,
+          semId: semId,
+          subId: subId,
+          yearId: yearId,
+          linkId: linkId,
+          isverified: false,
+        })
+        .then(() => {
+          alert("Successfully send for verification.");
+        });
     } else {
-      alert("Please fill all details!!")
+      alert("Please fill all details!!");
     }
   };
   const adduniversity = () => {
@@ -380,103 +409,139 @@ const Uplaod = () => {
     }
   };
 
- const Scan = () =>{
-   return( <div style={{ width: "45%", height: "70%" }}>
-   <h1 style={{ textAlign: "center" }}>Upload Question</h1>
-   <h3 style={{ textAlign: "center" }}>
-     Enter your question or scan an image
-   </h3>
-   <div
-     style={{
-       width: "100%",
-       height: "100%",
-       flex: 1,
-       backgroundColor: "white",
-       alignItems: "center",
-     }}
-   >
-     <div
-       style={{
-         backgroundColor: "#dedede",
-         width: "100%",
-         height: "100%",
-         alignContent: "center",
-       }}
-     >
-       <div style={{ height: 10, width: "100%" }} />
-       <div
-         style={{
-           display: "flex",
-           flex: 4,
-           height: "70%",
-           borderWidth: 10,
-           borderColor: "black",
-           borderRadius: 10,
-           backgroundColor: "white",
-           marginInline: 10,
-         }}
-       >
-         {/* =========================textArea=============================== */}
+  const Scan = () => {
+    return (
+      <FormControl className={classes.formControl}>
+      <div style={{ width: "100%", height: "100%" }}>
+        <h1 style={{ textAlign: "center" }}>Upload Question</h1>
+        <h3 style={{ textAlign: "center" }}>
+          Enter your question or scan an image
+        </h3>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            flex: 1,
+            backgroundColor: "white",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#dedede",
+              width: "100%",
+              height: "100%",
+              alignContent: "center",
+            }}
+          >
+            <div style={{ height: 10, width: "100%" }} />
+            <div
+              style={{
+                display: "flex",
+                flex: 4,
+                height: "70%",
+                borderWidth: 10,
+                borderColor: "black",
+                borderRadius: 10,
+                backgroundColor: "white",
+                marginInline: 10,
+              }}
+            >
+              {/* =========================textArea=============================== */}
 
-         <TextareaAutosize
-           placeholder="enter your question here"
-           rowsMax={4}
-           style={{ width: "100%", height: "100%", overflow:'scroll' }}
-           value={resText}
-           onChange={(event) => setResText(event.target.value)}
-         />
-         {/* <input type="textarea" name="edited_text" value={resText} rowsMax={10} style={{width:'98%'}} /> */}
-       </div>
-       <div
-         style={{
-           flex: 1,
-           marginInline: 10,
-           marginTop: 10,
-           alignItems: "center",
-           display: "flex",
-           flexDirection: "column",
-         }}
-       >
-         <p style={{}}> Scan an image for question </p>
-         <input
-           type="file"
-           accept="image/*"
-           onChange={(e) => {
-             if (e.target.files[0]) {
-               setOcrImage(e.target.files[0]);
-             }
-           }}
-         />
-         <button
-           style={{ marginTop: "1.5%", fontSize: 18, width: "40%" }}
-           onClick={() => ocrFunction()}
-           disabled={OcrImage == null}
-         >
-           Scan
-         </button>
-         <button
-           style={{
-             marginTop: "1.5%",
-             fontSize: 18,
-             backgroundColor: "red",
-             color: "white",
-             width: "40%",
-           }}
-           onClick={() => console.log(resText)}
-         >
-           submit
-         </button>
-       </div>
-     </div>
-   </div>
- </div>)
- } 
+              <TextareaAutosize
+                placeholder="enter your question here"
+                rows={5}
+                style={{ width: "100%", height: "100%", overflow: "scroll" }}
+                value={resText}
+                onChange={(event) => setResText(event.target.value)}
+              />
+              {/* <input type="textarea" name="edited_text" value={resText} rowsMax={10} style={{width:'98%'}} /> */}
+            </div>
+            <div
+              style={{
+                flex: 1,
+                marginInline: 10,
+                marginTop: 10,
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <p style={{}}> Scan an image for question </p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    setOcrImage(e.target.files[0]);
+                  }
+                }}
+              />
+              <button
+                style={{ marginTop: "1.5%", fontSize: 18, width: "40%" }}
+                onClick={() => ocrFunction()}
+                disabled={OcrImage == null}
+              >
+                Scan
+              </button>
+              <div className={classes.root}>
+              <LinearProgressWithLabel value={progress} />
+              </div>
+              <button
+                style={{
+                  marginTop: "1.5%",
+                  fontSize: 18,
+                  backgroundColor: "red",
+                  color: "white",
+                  width: "40%",
+                }}
+                onClick={() => console.log(resText)}
+              >
+                submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </FormControl>
+    );
+  };
+
+  const Upload = () => {
+    return (
+      <FormControl className={classes.formControl}>
+        <h5 style={{ marginBottom: 5 }}>Upload</h5>
+        <div className="upload_button">
+          <input type="file" onChange={handleFileChange} style={{}} />
+          <button onClick={handleupload} disabled={isUplaoddisabled}>
+            Uplaod
+          </button>
+          {isShow ? (
+            uploadprogress === 100 ? (
+              <div>
+                <DoneIcon />
+                <a href={url} rel="noopener noreferrer" target="_blank">
+                  <button>view file</button>
+                </a>
+              </div>
+            ) : (
+              <div>
+                <p>{uploadprogress}% completed</p>
+                <CircularProgress
+                  variant="determinate"
+                  value={uploadprogress}
+                />
+              </div>
+            )
+          ) : null}
+        </div>
+      </FormControl>
+    );
+  };
+
   return (
-    <Container
-      maxWidth="lg"
-      className= "container-inside"
-     
-    >
+    <Container maxWidth="lg" className="container-inside">
       <div style={{ width: "100%" }}>
         <h1 style={{ textAlign: "center" }}>Upload Question Paper</h1>
         <h3 style={{ textAlign: "center" }}>Select your university details</h3>
@@ -601,82 +666,52 @@ const Uplaod = () => {
         </FormControl>
 
         <FormControl className={classes.formControl}>
-        <div className="btn-inline">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={verifybtn}
-          style={{
-            width: "40%"
-            
-          }}
-        >
-          Send to verify
-        </Button>
-        <Button
-        variant="contained"
-        color="primary"
-        onClick={verifybtn}
-        style={{
-          width: "40%"
-        }}
-      >
-        Send to verify
-      </Button>
-      </div>  
-        </FormControl>
-
-
-
-        <FormControl className={classes.formControl}>
-          <h5 style={{ marginBottom: 5 }}>Upload</h5>
-          <div className="upload_button">
-            <input type="file" onChange={handleFileChange} style={{}} />
-            <button onClick={handleupload} disabled={isUplaoddisabled}>
-              Uplaod
-            </button>
-            {isShow ? (
-              uploadprogress === 100 ? (
-                <div>
-                  <DoneIcon />
-                  <a href={url} rel="noopener noreferrer" target="_blank">
-                    <button>view file</button>
-                  </a>
-                </div>
-              ) : (
-                <div>
-                  <p>{uploadprogress}% completed</p>
-                  <CircularProgress
-                    variant="determinate"
-                    value={uploadprogress}
-                  />
-                </div>
-              )
-            ) : null}
+          <div className="btn-inline">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => [setShowScan(false), setShowUpload(true)]}
+              style={{
+                width: "40%",
+              }}
+            >
+              PDF Mode
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => [setShowScan(true), setShowUpload(false)]}
+              style={{
+                width: "40%",
+              }}
+            >
+              Scan Mode
+            </Button>
           </div>
         </FormControl>
-        <Scan/>
+        {ShowScan ? <Scan /> : null}
+
+        {ShowUpload ? <Upload /> : null}
 
         <FormControl className={classes.formControl}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={verifybtn}
-          style={{
-            display: "flex",
-            paddingRight: "auto",
-            paddingLeft: "auto",
-            width: "100%",
-          }}
-        >
-          Send to verify
-        </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={verifybtn}
+            style={{
+              display: "flex",
+              paddingRight: "auto",
+              paddingLeft: "auto",
+              width: "100%",
+            }}
+          >
+            Send to verify
+          </Button>
         </FormControl>
       </div>
       <div style={{ marginTop: "10%", marginRight: 40, marginLeft: -20 }}>
         Or
       </div>
-    
     </Container>
   );
 };
