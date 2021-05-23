@@ -541,7 +541,7 @@ const Uplaod = () => {
   };
 
   return (
-    <Container maxWidth="lg" className="container-inside">
+    <Container maxWidth="lg" className="container-inside" >
       <div style={{ width: "100%" }}>
         <h1 style={{ textAlign: "center" }}>Upload Question Paper</h1>
         <h3 style={{ textAlign: "center" }}>Select your university details</h3>
@@ -677,6 +677,7 @@ const Uplaod = () => {
             >
               PDF Mode
             </Button>
+            OR
             <Button
               variant="contained"
               color="primary"
@@ -708,9 +709,6 @@ const Uplaod = () => {
             Send to verify
           </Button>
         </FormControl>
-      </div>
-      <div style={{ marginTop: "10%", marginRight: 40, marginLeft: -20 }}>
-        Or
       </div>
     </Container>
   );
