@@ -94,12 +94,13 @@ const Uplaod = () => {
   const [isYeardisabled, setisYeardisabled] = useState(true);
   const [isUplaoddisabled, setisUplaoddisabled] = useState(true);
 
-  const [isBranchLoaded, setisBranchLoaded] = useState(false);
+  const [isBranchLoaded, setisBranchLoaded] = useState(true);
 
   const [OcrImage, setOcrImage] = useState(null);
   const [resText, setResText] = useState();
 
   const handleUniversityChange = (event) => {
+    setisBranchLoaded(false)////
     setisBranchdisabled(false);
     setisSemdisabled(true);
     setisSubdisabled(true);
@@ -378,19 +379,105 @@ const Uplaod = () => {
         });
     }
   };
+
+ const Scan = () =>{
+   return( <div style={{ width: "45%", height: "70%" }}>
+   <h1 style={{ textAlign: "center" }}>Upload Question</h1>
+   <h3 style={{ textAlign: "center" }}>
+     Enter your question or scan an image
+   </h3>
+   <div
+     style={{
+       width: "100%",
+       height: "100%",
+       flex: 1,
+       backgroundColor: "white",
+       alignItems: "center",
+     }}
+   >
+     <div
+       style={{
+         backgroundColor: "#dedede",
+         width: "100%",
+         height: "100%",
+         alignContent: "center",
+       }}
+     >
+       <div style={{ height: 10, width: "100%" }} />
+       <div
+         style={{
+           display: "flex",
+           flex: 4,
+           height: "70%",
+           borderWidth: 10,
+           borderColor: "black",
+           borderRadius: 10,
+           backgroundColor: "white",
+           marginInline: 10,
+         }}
+       >
+         {/* =========================textArea=============================== */}
+
+         <TextareaAutosize
+           placeholder="enter your question here"
+           rowsMax={4}
+           style={{ width: "100%", height: "100%", overflow:'scroll' }}
+           value={resText}
+           onChange={(event) => setResText(event.target.value)}
+         />
+         {/* <input type="textarea" name="edited_text" value={resText} rowsMax={10} style={{width:'98%'}} /> */}
+       </div>
+       <div
+         style={{
+           flex: 1,
+           marginInline: 10,
+           marginTop: 10,
+           alignItems: "center",
+           display: "flex",
+           flexDirection: "column",
+         }}
+       >
+         <p style={{}}> Scan an image for question </p>
+         <input
+           type="file"
+           accept="image/*"
+           onChange={(e) => {
+             if (e.target.files[0]) {
+               setOcrImage(e.target.files[0]);
+             }
+           }}
+         />
+         <button
+           style={{ marginTop: "1.5%", fontSize: 18, width: "40%" }}
+           onClick={() => ocrFunction()}
+           disabled={OcrImage == null}
+         >
+           Scan
+         </button>
+         <button
+           style={{
+             marginTop: "1.5%",
+             fontSize: 18,
+             backgroundColor: "red",
+             color: "white",
+             width: "40%",
+           }}
+           onClick={() => console.log(resText)}
+         >
+           submit
+         </button>
+       </div>
+     </div>
+   </div>
+ </div>)
+ } 
   return (
     <Container
       maxWidth="lg"
-      style={{
-        backgroundColor: "lightgray",
-        height: "90vh",
-        paddingTop: 10,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-      }}
+      className= "container-inside"
+     
     >
-      <div style={{ width: "50%" }}>
+      <div style={{ width: "100%" }}>
         <h1 style={{ textAlign: "center" }}>Upload Question Paper</h1>
         <h3 style={{ textAlign: "center" }}>Select your university details</h3>
         <FormControl className={classes.formControl}>
@@ -514,6 +601,34 @@ const Uplaod = () => {
         </FormControl>
 
         <FormControl className={classes.formControl}>
+        <div className="btn-inline">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={verifybtn}
+          style={{
+            width: "40%"
+            
+          }}
+        >
+          Send to verify
+        </Button>
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={verifybtn}
+        style={{
+          width: "40%"
+        }}
+      >
+        Send to verify
+      </Button>
+      </div>  
+        </FormControl>
+
+
+
+        <FormControl className={classes.formControl}>
           <h5 style={{ marginBottom: 5 }}>Upload</h5>
           <div className="upload_button">
             <input type="file" onChange={handleFileChange} style={{}} />
@@ -540,6 +655,7 @@ const Uplaod = () => {
             ) : null}
           </div>
         </FormControl>
+        <Scan/>
 
         <FormControl className={classes.formControl}>
         <Button
@@ -560,95 +676,7 @@ const Uplaod = () => {
       <div style={{ marginTop: "10%", marginRight: 40, marginLeft: -20 }}>
         Or
       </div>
-      <div style={{ width: "45%", height: "70%" }}>
-        <h1 style={{ textAlign: "center" }}>Upload Question</h1>
-        <h3 style={{ textAlign: "center" }}>
-          Enter your question or scan an image
-        </h3>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            flex: 1,
-            backgroundColor: "white",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#dedede",
-              width: "100%",
-              height: "100%",
-              alignContent: "center",
-            }}
-          >
-            <div style={{ height: 10, width: "100%" }} />
-            <div
-              style={{
-                display: "flex",
-                flex: 4,
-                height: "70%",
-                borderWidth: 10,
-                borderColor: "black",
-                borderRadius: 10,
-                backgroundColor: "white",
-                marginInline: 10,
-              }}
-            >
-              {/* =========================textArea=============================== */}
-
-              <TextareaAutosize
-                placeholder="enter your question here"
-                rowsMax={4}
-                style={{ width: "100%", height: "100%", overflow:'scroll' }}
-                value={resText}
-                onChange={(event) => setResText(event.target.value)}
-              />
-              {/* <input type="textarea" name="edited_text" value={resText} rowsMax={10} style={{width:'98%'}} /> */}
-            </div>
-            <div
-              style={{
-                flex: 1,
-                marginInline: 10,
-                marginTop: 10,
-                alignItems: "center",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <p style={{}}> Scan an image for question </p>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files[0]) {
-                    setOcrImage(e.target.files[0]);
-                  }
-                }}
-              />
-              <button
-                style={{ marginTop: "1.5%", fontSize: 18, width: "40%" }}
-                onClick={() => ocrFunction()}
-                disabled={OcrImage == null}
-              >
-                Scan
-              </button>
-              <button
-                style={{
-                  marginTop: "1.5%",
-                  fontSize: 18,
-                  backgroundColor: "red",
-                  color: "white",
-                  width: "40%",
-                }}
-                onClick={() => console.log(resText)}
-              >
-                submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    
     </Container>
   );
 };

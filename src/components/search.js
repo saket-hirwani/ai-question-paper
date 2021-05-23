@@ -20,8 +20,9 @@ function Search() {
       marginRight: "auto",
       width: "70%",
       backgroundColor: "white",
-      borderRadius: 5,
-      padding: 10,
+      borderRadius: 6,
+      padding: 15,
+      marginTop: 20,
     },
   }));
 
@@ -216,9 +217,10 @@ function Search() {
   return (
     <Container
       maxWidth="md"
-      style={{ backgroundColor: "lightgray", height: "90vh", paddingTop: 100 }}
+      className= "container-inside"
+      
     >
-      <h1 style={{ textAlign: "center" }}>Select your university details</h1>
+      <h1 style={{ textAlign: "center", paddingBottom:30 }}>Select your university details</h1>
       <FormControl className={classes.formControl}>
         <h5>University</h5>
         <div className="upload_select">
